@@ -17,9 +17,17 @@ Pyolice is a Python wrapper for the UK Police API, providing an easy-to-use inte
 
 ## Usage
 
+Pyolice is split between 4 sections
+- Street level crimes
+- Neighbourhood
+- Stop and search
+- Police force
+
 Here are some examples of how to use Pyolice:
 
-### Fetching Crimes at a Specific Location
+### Street Level Crimes
+
+#### Fetching Crimes at a Specific Location
 ```python
 import pyolice
 
@@ -27,6 +35,85 @@ crimes = pyolice.street_level.get_street_crimes_at_location(lat=52.629729, lng=-
 print(crimes)
 ```
 
+#### Fetching Crimes in a Custom Area
+```python
+import pyolice
+
+polygon = "52.268,0.543:52.794,0.238:52.130,0.478"
+crimes = pyolice.street_level.get_street_crimes_in_area(poly=polygon)
+print(crimes)
+```
+
+#### Fetching Outcomes at a Specific Location
+```python
+import pyolice
+
+outcomes = pyolice.street_level.get_outcomes_at_location(location_id="12345", date="2023-12")
+print(outcomes)
+```
+
+#### Fetching Outcomes by Coordinates
+```python
+import pyolice
+
+outcomes = pyolice.street_level.get_outcomes_by_coordinates(lat=52.629729, lng=-1.131592, date="2023-12")
+print(outcomes)
+```
+
+#### Fetching Outcomes in a Custom Area
+```python
+import pyolice
+
+polygon = "52.268,0.543:52.794,0.238:52.130,0.478"
+outcomes = pyolice.street_level.get_outcomes_in_area(poly=polygon)
+print(outcomes)
+```
+
+#### Fetching Crimes at a Specific Location by ID or Coordinates
+```python
+import pyolice
+
+# Fetch by location ID
+crimes = pyolice.street_level.get_crimes_at_specific_location(location_id="12345")
+print(crimes)
+
+# Fetch by coordinates
+crimes = pyolice.street_level.get_crimes_at_specific_location(lat=52.629729, lng=-1.131592)
+print(crimes)
+```
+
+#### Fetching Crimes with No Location
+```python
+import pyolice
+
+crimes = pyolice.street_level.get_crimes_no_location(category="all-crime", force="leicestershire", date="2023-12")
+print(crimes)
+```
+
+#### Fetching Crime Categories
+```python
+import pyolice
+
+categories = pyolice.street_level.get_crime_categories(date="2023-12")
+print(categories)
+```
+
+#### Fetching Last Updated Date
+```python
+import pyolice
+
+last_updated = pyolice.street_level.get_last_updated()
+print(last_updated)
+```
+
+#### Fetching Outcomes for a Specific Crime
+```python
+import pyolice
+
+crime_id = "e11dade0a92a912d12329b9b2abb856ac9520434ad6845c30f503e9901d140f1"
+outcomes = pyolice.street_level.get_outcomes_for_crime(crime_id=crime_id)
+print(outcomes)
+```
 ### Fetching Neighbourhood Details
 ```python
 import pyolice
@@ -35,7 +122,7 @@ neighbourhoods = pyolice.neighbourhoods.list_neighbourhoods(force_id="leicesters
 print(neighbourhoods)
 ```
 
-### Stop and Search by Force
+### Stop and Search
 ```python
 import pyolice
 

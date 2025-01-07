@@ -17,41 +17,37 @@ Pyolice is a Python wrapper for the UK Police API, providing an easy-to-use inte
 
 ## Usage
 
-Here are some examples:
+Here are some examples of how to use Pyolice:
 
 ### Fetching Crimes at a Specific Location
 ```python
-from Pyolice.street_level import StreetLevelCrime
+import pyolice
 
-client = StreetLevelCrime()
-crimes = client.get_street_crimes_at_location(lat=52.629729, lng=-1.131592)
+crimes = pyolice.street_level.get_street_crimes_at_location(lat=52.629729, lng=-1.131592)
 print(crimes)
 ```
 
 ### Fetching Neighbourhood Details
 ```python
-from Pyolice.neighbourhoods import Neighbourhoods
+import pyolice
 
-neighbourhood_client = Neighbourhoods()
-neighbourhoods = neighbourhood_client.list_neighbourhoods(force_id="leicestershire")
+neighbourhoods = pyolice.neighbourhoods.list_neighbourhoods(force_id="leicestershire")
 print(neighbourhoods)
 ```
 
 ### Stop and Search by Force
 ```python
-from Pyolice.stop_search import StopSearch
+import pyolice
 
-stop_search_client = StopSearch()
-stops = stop_search_client.stop_and_search_by_force(force="leicestershire", date="2023-12")
+stops = pyolice.stop_search.stop_and_search_by_force(force="leicestershire", date="2023-12")
 print(stops)
 ```
 
 ### Fetching Police Force Details
 ```python
-from Pyolice.forces import Forces
+import pyolice
 
-forces_client = Forces()
-forces = forces_client.list_forces()
+forces = pyolice.forces.list_forces()
 print(forces)
 ```
 

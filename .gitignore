@@ -1,3 +1,6 @@
 .vscode/*
 .vscode/launch.json
 .vscode/settings.json
+Pyolice/__pycache__/*.pyc
+tests/__pycache__/*.pyc
+Pyolice/__pycache__/*

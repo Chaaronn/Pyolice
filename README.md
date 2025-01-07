@@ -1,92 +1,64 @@
 # Pyolice
 
-Pyolice is a Python wrapper for the UK Police API. It allows developers to easily access various endpoints of the API, including street-level crimes and other police data.
+## Overview
+Pyolice is a Python wrapper for the UK Police API, providing an easy-to-use interface to access and interact with police data such as street-level crimes, outcomes, neighbourhoods, and stop-and-search activities. This readme.md is generated through ChatGPT for now, please forgive errors.
 
 ## Features
-- Fetch street-level crimes for a specific location or custom area.
-- Validate input parameters like latitude, longitude, and polygon strings.
-- Handle API errors gracefully.
+- Retrieve street-level crimes at specific locations or within custom areas.
+- Fetch crime outcomes by coordinates, location, or area.
+- Access information about neighbourhoods, including teams, events, and boundaries.
+- Perform stop-and-search queries by area, force, or location.
+- List and get details of police forces.
+- Obtain metadata, such as available crime categories and the last updated date for the data.
 
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/pyolice.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd pyolice
-   ```
-
-3. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Requirements
+- Python 3.7 or later
+- `requests`
 
 ## Usage
 
-### Example: Fetch Crimes at a Specific Location
+Here are some examples:
 
-The `get_crimes_at_location` method retrieves crimes at a specific location based on latitude and longitude. Optionally, you can provide a date in `YYYY-MM` format to limit the results to a specific month.
-
-#### Code Example:
-
+### Fetching Crimes at a Specific Location
 ```python
-from Pyolice.endpoints import StreetLevelCrime
+from Pyolice.street_level import StreetLevelCrime
 
-# Initialize the StreetLevelCrime client
 client = StreetLevelCrime()
-
-# Fetch crimes at a specific location
-latitude = 52.629729
-longitude = -1.131592
-data = client.get_crimes_at_location(latitude, longitude, date="2024-01")
-
-# Print the result
-print(data)
+crimes = client.get_street_crimes_at_location(lat=52.629729, lng=-1.131592)
+print(crimes)
 ```
 
-#### Parameters:
-- `lat` (float): Latitude of the location.
-- `lng` (float): Longitude of the location.
-- `date` (str, optional): Date in `YYYY-MM` format. Defaults to the latest available month.
-
-#### Returns:
-- A list of crime data at the specified location.
-
-### Example: Fetch Crimes in a Custom Area
-
-The `get_crimes_in_area` method retrieves crimes in a custom-defined area using a polygon string.
-
-#### Code Example:
-
+### Fetching Neighbourhood Details
 ```python
-from Pyolice.endpoints import StreetLevelCrime
+from Pyolice.neighbourhoods import Neighbourhoods
 
-# Initialize the StreetLevelCrime client
-client = StreetLevelCrime()
-
-# Define a polygon area (format: [lat,lng]:[lat,lng])
-polygon = "52.268,0.543:52.794,0.238:52.130,0.478"
-data = client.get_crimes_in_area(polygon, date="2024-01")
-
-# Print the result
-print(data)
+neighbourhood_client = Neighbourhoods()
+neighbourhoods = neighbourhood_client.list_neighbourhoods(force_id="leicestershire")
+print(neighbourhoods)
 ```
 
-#### Parameters:
-- `poly` (str): A polygon string defining the area boundary.
-- `date` (str, optional): Date in `YYYY-MM` format. Defaults to the latest available month.
+### Stop and Search by Force
+```python
+from Pyolice.stop_search import StopSearch
 
-#### Returns:
-- A list of crime data within the specified area.
+stop_search_client = StopSearch()
+stops = stop_search_client.stop_and_search_by_force(force="leicestershire", date="2023-12")
+print(stops)
+```
 
-## Error Handling
+### Fetching Police Force Details
+```python
+from Pyolice.forces import Forces
 
-Pyolice uses custom exceptions to handle errors:
-- `APIError`: Raised for API request failures.
-- `ValueError`: Raised for invalid input parameters.
+forces_client = Forces()
+forces = forces_client.list_forces()
+print(forces)
+```
 
-## License
-This project is licensed under the MIT License.
+## Validation
+Pyolice provides built-in validation for inputs:
+- Latitude and longitude are validated to ensure they fall within valid ranges.
+- Polygon strings for custom areas are checked for proper formatting.
+
+## Acknowledgements
+This project relies on the [UK Police API](https://data.police.uk/docs/) for data access and services.

@@ -23,9 +23,33 @@ Pyolice is split between 4 sections
 - Stop and search
 - Police force
 
-Here are some examples of how to use Pyolice:
+this is an example to find specific info:
+
+```
+import pyolice
+
+# Step 1: Locate the neighbourhood for specific coordinates
+neighbourhood_info = pyolice.neighbourhoods.locate_neighbourhood(latitude=52.629729, longitude=-1.131592)
+force_id = neighbourhood_info['force']
+neighbourhood_id = neighbourhood_info['neighbourhood']
+
+# Step 2: Get detailed information about the neighbourhood
+neighbourhood_details = pyolice.neighbourhoods.get_neighbourhood_details(force_id=force_id, neighbourhood_id=neighbourhood_id)
+print("Neighbourhood Details:", neighbourhood_details)
+
+# Step 3: Fetch street-level crimes in the neighbourhood area
+polygon = "52.268,0.543:52.794,0.238:52.130,0.478"  # Replace with actual boundary data if available
+crimes = pyolice.street_level.get_street_crimes_in_area(poly=polygon, date="2023-12")
+print("Crimes in Area:", crimes)
+
+# Step 4: Retrieve outcomes for crimes near the specified coordinates
+outcomes = pyolice.street_level.get_outcomes_by_coordinates(lat=52.629729, lng=-1.131592, date="2023-12")
+print("Crime Outcomes:", outcomes)
+```
 
 ### Street Level Crimes
+
+Methods relating to Street Level Crime:
 
 #### Fetching Crimes at a Specific Location
 ```python
@@ -115,6 +139,10 @@ outcomes = pyolice.street_level.get_outcomes_for_crime(crime_id=crime_id)
 print(outcomes)
 ```
 ### Fetching Neighbourhood Details
+
+Methods relating to neighbourhoods:
+
+#### Listing Neighbourhoods for a Force
 ```python
 import pyolice
 
@@ -122,7 +150,89 @@ neighbourhoods = pyolice.neighbourhoods.list_neighbourhoods(force_id="leicesters
 print(neighbourhoods)
 ```
 
+#### Fetching Neighbourhood Details
+```python
+import pyolice
+
+details = pyolice.neighbourhoods.get_neighbourhood_details(force_id="leicestershire", neighbourhood_id="12345")
+print(details)
+```
+
+#### Fetching Neighbourhood Boundary
+```python
+import pyolice
+
+boundary = pyolice.neighbourhoods.get_neighbourhood_boundary(force_id="leicestershire", neighbourhood_id="12345")
+print(boundary)
+```
+
+#### Fetching Neighbourhood Team Members
+```python
+import pyolice
+
+team = pyolice.neighbourhoods.get_neighbourhood_team(force_id="leicestershire", neighbourhood_id="12345")
+print(team)
+```
+
+#### Fetching Neighbourhood Events
+```python
+import pyolice
+
+events = pyolice.neighbourhoods.get_neighbourhood_events(force_id="leicestershire", neighbourhood_id="12345")
+print(events)
+```
+
+#### Fetching Neighbourhood Priorities
+```python
+import pyolice
+
+priorities = pyolice.neighbourhoods.get_neighbourhood_priorities(force_id="leicestershire", neighbourhood_id="12345")
+print(priorities)
+```
+
+#### Locating Neighbourhood by Coordinates
+```python
+import pyolice
+
+location = pyolice.neighbourhoods.locate_neighbourhood(latitude=52.629729, longitude=-1.131592)
+print(location)
+```
+
 ### Stop and Search
+
+Methods relating to stop and search: 
+
+#### Stop and Search by Area
+```python
+import pyolice
+
+# By latitude and longitude
+stops = pyolice.stop_search.stop_and_search_by_area(lat=52.629729, lng=-1.131592, date="2023-12")
+print(stops)
+
+# By polygon
+polygon = "52.268,0.543:52.794,0.238:52.130,0.478"
+stops = pyolice.stop_search.stop_and_search_by_area(poly=polygon, date="2023-12")
+print(stops)
+```
+
+#### Stop and Search by Location
+```python
+import pyolice
+
+stops = pyolice.stop_search.stop_and_search_by_location(location_id="12345", date="2023-12")
+print(stops)
+```
+
+#### Stop and Search with No Location
+```python
+import pyolice
+
+stops = pyolice.stop_search.stop_and_search_no_location(force="leicestershire", date="2023-12")
+print(stops)
+```
+
+#### Stop and Search by Force
 ```python
 import pyolice
 
@@ -131,11 +241,31 @@ print(stops)
 ```
 
 ### Fetching Police Force Details
+
+Methods relating to Forces:
+
+#### Listing All Police Forces
 ```python
 import pyolice
 
 forces = pyolice.forces.list_forces()
 print(forces)
+```
+
+#### Fetching Details of a Specific Police Force
+```python
+import pyolice
+
+details = pyolice.forces.get_force_details(force_id="leicestershire")
+print(details)
+```
+
+#### Fetching Senior Officers of a Specific Police Force
+```python
+import pyolice
+
+officers = pyolice.forces.get_senior_officers(force_id="leicestershire")
+print(officers)
 ```
 
 ## Validation

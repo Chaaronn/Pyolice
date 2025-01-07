@@ -25,7 +25,7 @@ Pyolice is split between 4 sections
 
 this is an example to find specific info:
 
-```
+```python
 import pyolice
 
 # Step 1: Locate the neighbourhood for specific coordinates

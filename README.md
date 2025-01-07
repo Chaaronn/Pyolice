@@ -47,6 +47,10 @@ outcomes = pyolice.street_level.get_outcomes_by_coordinates(lat=52.629729, lng=-
 print("Crime Outcomes:", outcomes)
 ```
 
+## Methods
+
+Below are all methods in the api
+
 ### Street Level Crimes
 
 Methods relating to Street Level Crime:

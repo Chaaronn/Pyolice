@@ -1,7 +1,7 @@
 import requests
 from .exceptions import APIError
 
-class Pyolice:
+class uk_police:
     BASE_URL = "https://data.police.uk/api"
 
     def __init__(self):

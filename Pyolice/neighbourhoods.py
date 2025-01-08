@@ -1,9 +1,9 @@
-from Pyolice.client import Pyolice
+from Pyolice.client import uk_police
 from Pyolice.utils import validate_lat_lng
 
 class Neighbourhoods:
     def __init__(self):
-        self.client = Pyolice()
+        self.client = uk_police()
 
     def list_neighbourhoods(self, force_id: str):
         """

@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="Pyolice",
-    version="0.1.0",
+    name="uk_police",
+    version="0.1.1",
     description="A Python wrapper for the UK Police API.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="Matt Voce",
-    author_email="@mozmail.com",
-    url="https://github.com/Chaaronn/Pyolice",
+    author_email="mattvoce7259@gmail.com",
+    url="https://github.com/Chaaronn/UK_Police_API",
     packages=find_packages(),
     install_requires=[
         "requests>=2.25.0",

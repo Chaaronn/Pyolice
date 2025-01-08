@@ -1,4 +1,4 @@
-from Pyolice.client import Pyolice
+from Pyolice.client import uk_police
 
 '''
 Handles police forces related info
@@ -6,7 +6,7 @@ Handles police forces related info
 
 class Forces:
     def __init__(self):
-        self.client = Pyolice()
+        self.client = uk_police()
 
     def list_forces(self):
         """

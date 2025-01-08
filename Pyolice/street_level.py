@@ -1,4 +1,4 @@
-from Pyolice.client import Pyolice
+from Pyolice.client import uk_police
 from Pyolice.utils import validate_lat_lng, validate_polygon
 
 '''
@@ -7,7 +7,7 @@ Handles street level crime related info
 
 class StreetLevelCrime:
     def __init__(self):
-        self.client = Pyolice()
+        self.client = uk_police()
 
     def get_street_crimes_at_location(self, lat: float, lng: float, date: str = None):
         """

@@ -15,7 +15,7 @@ class Forces:
         :return: List of dictionaries containing force IDs and names.
         :raises: APIError for request failures.
         """
-        return self.client._get("forces")
+        return self.client._get_with_retry("forces")
     
     def get_force_details(self, force_id: str):
         """
@@ -28,7 +28,7 @@ class Forces:
         if not force_id:
             raise ValueError("force_id must be provided.")
 
-        return self.client._get(f"forces/{force_id}")
+        return self.client._get_with_retry(f"forces/{force_id}")
     
     def get_senior_officers(self, force_id: str):
         """
@@ -41,7 +41,7 @@ class Forces:
         if not force_id:
             raise ValueError("force_id must be provided.")
 
-        return self.client._get(f"forces/{force_id}/people")
+        return self.client._get_with_retry(f"forces/{force_id}/people")
     
 
 if __name__ == "__main__":

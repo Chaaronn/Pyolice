@@ -1,30 +1,45 @@
 import unittest
 from unittest.mock import patch
-from uk_police.client import Pyolice
-from uk_police.exceptions import APIError
+from uk_police.client import uk_police
+from uk_police.exceptions import *
+import requests
 
 class TestPyoliceClient(unittest.TestCase):
     def setUp(self):
-        self.client = Pyolice()
+        self.client = uk_police()
 
     @patch("requests.get")
     def test_get_successful_response(self, mock_get):
-        mock_get.return_value.status_code = 200
-        mock_get.return_value.json.return_value = {"key": "value"}
+        mock_response = mock_get.return_value
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"key": "value"}
+
         endpoint = "test-endpoint"
         result = self.client._get(endpoint)
-        mock_get.assert_called_once_with(f"{self.client.BASE_URL}/{endpoint}", params=None)
+
         self.assertEqual(result, {"key": "value"})
+        mock_get.assert_called_once_with(
+            f"{self.client.BASE_URL}/{endpoint}",
+            params=None,
+            timeout=10
+        )
 
     @patch("requests.get")
     def test_get_with_params(self, mock_get):
-        mock_get.return_value.status_code = 200
-        mock_get.return_value.json.return_value = {"key": "value"}
+        mock_response = mock_get.return_value
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"key": "value"}
+
         endpoint = "test-endpoint"
         params = {"param1": "value1", "param2": "value2"}
         result = self.client._get(endpoint, params=params)
-        mock_get.assert_called_once_with(f"{self.client.BASE_URL}/{endpoint}", params=params)
+
         self.assertEqual(result, {"key": "value"})
+        mock_get.assert_called_once_with(
+            f"{self.client.BASE_URL}/{endpoint}",
+            params=params,
+            timeout=10
+        )
 
     @patch("requests.get")
     def test_get_raises_api_error_on_failure(self, mock_get):
@@ -42,6 +57,18 @@ class TestPyoliceClient(unittest.TestCase):
         endpoint = "test-endpoint"
         with self.assertRaises(APIError):
             self.client._get(endpoint)
+    
+    @patch("requests.get")
+    def test_rate_limit_retry(self, mock_get):
+        mock_response = mock_get.return_value
+        mock_response.status_code = 429
+        mock_response.headers = {"Retry-After": "2"}
+        mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError()
+
+        with self.assertRaises(RateLimitError) as context:
+            self.client._get("some-endpoint")
+
+        self.assertEqual(context.exception.retry_after, 2)
 
 if __name__ == "__main__":
     unittest.main()

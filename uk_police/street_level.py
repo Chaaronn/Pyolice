@@ -29,7 +29,7 @@ class StreetLevelCrime:
             params["date"] = date
 
 
-        return self.client._get("crimes-street/all-crime", params=params)
+        return self.client._get_with_retry("crimes-street/all-crime", params=params)
 
     def get_street_crimes_in_area(self, poly: str, date: str = None):
         """
@@ -47,7 +47,7 @@ class StreetLevelCrime:
         if date:
             params["date"] = date
             
-        return self.client._get("crimes-street/all-crime", params=params)
+        return self.client._get_with_retry("crimes-street/all-crime", params=params)
     
     def get_outcomes_at_location(self, location_id: str, date: str = None):
         """
@@ -65,7 +65,7 @@ class StreetLevelCrime:
         if date:
             params["date"] = date
 
-        return self.client._get("outcomes-at-location", params=params)
+        return self.client._get_with_retry("outcomes-at-location", params=params)
 
     def get_outcomes_by_coordinates(self, lat: float, lng: float, date: str = None):
         """
@@ -83,7 +83,7 @@ class StreetLevelCrime:
         if date:
             params["date"] = date
 
-        return self.client._get("outcomes-at-location", params=params)
+        return self.client._get_with_retry("outcomes-at-location", params=params)
 
     def get_outcomes_in_area(self, poly: str, date: str = None):
         """
@@ -100,7 +100,7 @@ class StreetLevelCrime:
         if date:
             params["date"] = date
 
-        return self.client._get("outcomes-at-location", params=params)
+        return self.client._get_with_retry("outcomes-at-location", params=params)
     
     def get_crimes_at_specific_location(self, location_id: str = None, lat: float = None, lng: float = None, date: str = None):
         """
@@ -127,7 +127,7 @@ class StreetLevelCrime:
         if date:
             params["date"] = date
 
-        return self.client._get("crimes-at-location", params=params)
+        return self.client._get_with_retry("crimes-at-location", params=params)
     
     def get_crimes_no_location(self, category: str, force: str, date: str = None):
         """
@@ -149,7 +149,7 @@ class StreetLevelCrime:
         if date:
             params["date"] = date
 
-        return self.client._get("crimes-no-location", params=params)
+        return self.client._get_with_retry("crimes-no-location", params=params)
     
     def get_crime_categories(self, date: str = None):
         """
@@ -163,7 +163,7 @@ class StreetLevelCrime:
         if date:
             params["date"] = date
 
-        return self.client._get("crime-categories", params=params)
+        return self.client._get_with_retry("crime-categories", params=params)
     
     def get_last_updated(self):
         """
@@ -172,7 +172,7 @@ class StreetLevelCrime:
         :return: Dictionary containing the date in ISO format.
         :raises: APIError for request failures.
         """
-        return self.client._get("crime-last-updated")
+        return self.client._get_with_retry("crime-last-updated")
     
     def get_outcomes_for_crime(self, crime_id: str):
         """
@@ -185,4 +185,4 @@ class StreetLevelCrime:
         if not crime_id or len(crime_id) != 64:
             raise ValueError("A valid 64-character crime ID must be provided.")
 
-        return self.client._get(f"outcomes-for-crime/{crime_id}")
+        return self.client._get_with_retry(f"outcomes-for-crime/{crime_id}")

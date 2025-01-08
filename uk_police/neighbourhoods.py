@@ -16,7 +16,7 @@ class Neighbourhoods:
         if not force_id:
             raise ValueError("force_id must be provided.")
 
-        return self.client._get(f"{force_id}/neighbourhoods")
+        return self.client._get_with_retry(f"{force_id}/neighbourhoods")
     
     def get_neighbourhood_details(self, force_id: str, neighbourhood_id: str):
         """
@@ -30,7 +30,7 @@ class Neighbourhoods:
         if not force_id or not neighbourhood_id:
             raise ValueError("Both force_id and neighbourhood_id must be provided.")
 
-        return self.client._get(f"{force_id}/{neighbourhood_id}")
+        return self.client._get_with_retry(f"{force_id}/{neighbourhood_id}")
     
     def get_neighbourhood_boundary(self, force_id: str, neighbourhood_id: str):
         """
@@ -44,7 +44,7 @@ class Neighbourhoods:
         if not force_id or not neighbourhood_id:
             raise ValueError("Both force_id and neighbourhood_id must be provided.")
 
-        return self.client._get(f"{force_id}/{neighbourhood_id}/boundary")
+        return self.client._get_with_retry(f"{force_id}/{neighbourhood_id}/boundary")
     
     def get_neighbourhood_team(self, force_id: str, neighbourhood_id: str):
         """
@@ -58,7 +58,7 @@ class Neighbourhoods:
         if not force_id or not neighbourhood_id:
             raise ValueError("Both force_id and neighbourhood_id must be provided.")
 
-        return self.client._get(f"{force_id}/{neighbourhood_id}/people")
+        return self.client._get_with_retry(f"{force_id}/{neighbourhood_id}/people")
     
     def get_neighbourhood_events(self, force_id: str, neighbourhood_id: str):
         """
@@ -72,7 +72,7 @@ class Neighbourhoods:
         if not force_id or not neighbourhood_id:
             raise ValueError("Both force_id and neighbourhood_id must be provided.")
 
-        return self.client._get(f"{force_id}/{neighbourhood_id}/events")
+        return self.client._get_with_retry(f"{force_id}/{neighbourhood_id}/events")
     
     def get_neighbourhood_priorities(self, force_id: str, neighbourhood_id: str):
         """
@@ -86,7 +86,7 @@ class Neighbourhoods:
         if not force_id or not neighbourhood_id:
             raise ValueError("Both force_id and neighbourhood_id must be provided.")
 
-        return self.client._get(f"{force_id}/{neighbourhood_id}/priorities")
+        return self.client._get_with_retry(f"{force_id}/{neighbourhood_id}/priorities")
     
     def locate_neighbourhood(self, latitude: float, longitude: float):
         """
@@ -100,4 +100,4 @@ class Neighbourhoods:
         validate_lat_lng(latitude, longitude)
 
         query = f"{latitude},{longitude}"
-        return self.client._get("locate-neighbourhood", params={"q": query})
+        return self.client._get_with_retry("locate-neighbourhood", params={"q": query})

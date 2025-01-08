@@ -32,7 +32,7 @@ class StopSearch:
         if date:
             params["date"] = date
 
-        return self.client._get("stops-street", params=params)
+        return self.client._get_with_retry("stops-street", params=params)
     
     def stop_and_search_by_location(self, location_id: str, date: str = None):
         """
@@ -51,7 +51,7 @@ class StopSearch:
         if date:
             params["date"] = date
 
-        return self.client._get("stops-at-location", params=params)
+        return self.client._get_with_retry("stops-at-location", params=params)
     
     def stop_and_search_no_location(self, force: str, date: str = None):
         """
@@ -70,7 +70,7 @@ class StopSearch:
         if date:
             params["date"] = date
 
-        return self.client._get("stops-no-location", params=params)
+        return self.client._get_with_retry("stops-no-location", params=params)
     
     def stop_and_search_by_force(self, force: str, date: str = None):
         """
@@ -89,4 +89,4 @@ class StopSearch:
         if date:
             params["date"] = date
 
-        return self.client._get("stops-force", params=params)
+        return self.client._get_with_retry("stops-force", params=params)

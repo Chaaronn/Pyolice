@@ -277,5 +277,16 @@ uk_police provides built-in validation for inputs:
 - Latitude and longitude are validated to ensure they fall within valid ranges.
 - Polygon strings for custom areas are checked for proper formatting.
 
+## Rate Limiting
+
+The UK Police API enforces a rate limit of 15 requests per second, with a burst of 30 requests allowed. If the rate limit is exceeded, the API responds with a `429 Too Many Requests` error.
+
+`uk-police` handles this automatically by:
+1. Raising a `RateLimitError` when the limit is exceeded.
+2. Including the `Retry-After` value (if provided) in the exception.
+3. Retrying the request up to 3 times before failing.
+
+You can configure the retry behavior by using the `max_retries` parameter.
+
 ## Acknowledgements
 This project relies on the [UK Police API](https://data.police.uk/docs/) for data access and services.

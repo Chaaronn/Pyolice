@@ -1,5 +1,5 @@
-from Pyolice.client import uk_police
-from Pyolice.utils import validate_lat_lng, validate_polygon
+from uk_police.client import uk_police
+from uk_police.utils import validate_lat_lng, validate_polygon
 
 '''
 Handles street level crime related info

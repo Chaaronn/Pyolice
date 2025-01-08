@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
-from Pyolice.client import Pyolice
-from Pyolice.exceptions import APIError
+from uk_police.client import Pyolice
+from uk_police.exceptions import APIError
 
 class TestPyoliceClient(unittest.TestCase):
     def setUp(self):

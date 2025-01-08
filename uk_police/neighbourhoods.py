@@ -1,5 +1,5 @@
-from Pyolice.client import uk_police
-from Pyolice.utils import validate_lat_lng
+from uk_police.client import uk_police
+from uk_police.utils import validate_lat_lng
 
 class Neighbourhoods:
     def __init__(self):

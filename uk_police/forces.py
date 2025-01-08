@@ -1,4 +1,4 @@
-from Pyolice.client import uk_police
+from uk_police.client import uk_police
 
 '''
 Handles police forces related info

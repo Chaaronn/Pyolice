@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from Pyolice.forces import Forces
+from uk_police.forces import Forces
 
 class TestForces(unittest.TestCase):
     def setUp(self):

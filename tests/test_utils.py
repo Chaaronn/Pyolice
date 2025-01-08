@@ -1,5 +1,5 @@
 import unittest
-from Pyolice.utils import validate_lat_lng, validate_polygon
+from uk_police.utils import validate_lat_lng, validate_polygon
 
 class TestUtils(unittest.TestCase):
     def test_validate_lat_lng(self):

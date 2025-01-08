@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from Pyolice.neighbourhoods import Neighbourhoods
+from uk_police.neighbourhoods import Neighbourhoods
 
 class TestNeighbourhoods(unittest.TestCase):
     def setUp(self):

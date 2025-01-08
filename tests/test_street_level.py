@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from Pyolice.street_level import StreetLevelCrime
+from uk_police.street_level import StreetLevelCrime
 
 class TestStreetLevelCrime(unittest.TestCase):
     def setUp(self):

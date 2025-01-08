@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from Pyolice.stop_search import StopSearch
+from uk_police.stop_search import StopSearch
 
 class TestStopSearch(unittest.TestCase):
     def setUp(self):

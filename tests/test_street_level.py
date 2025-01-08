@@ -6,7 +6,7 @@ class TestStreetLevelCrime(unittest.TestCase):
     def setUp(self):
         self.client = StreetLevelCrime()
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_street_crimes_at_location(self, mock_get):
         mock_get.return_value = [
             {"category": "violent-crime", "location": {"latitude": "51.5074", "longitude": "-0.1278"}}
@@ -16,7 +16,7 @@ class TestStreetLevelCrime(unittest.TestCase):
         mock_get.assert_called_once_with("crimes-street/all-crime", params={"lat": lat, "lng": lng, "date": date})
         self.assertEqual(result[0]["category"], "violent-crime")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_street_crimes_in_area(self, mock_get):
         mock_get.return_value = [
             {"category": "burglary", "location": {"latitude": "51.5074", "longitude": "-0.1278"}}
@@ -34,7 +34,7 @@ class TestStreetLevelCrime(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.get_street_crimes_in_area("invalid-poly-string")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_outcomes_at_location(self, mock_get):
         mock_get.return_value = [
             {"category": {"code": "local-resolution", "name": "Local resolution"}}
@@ -44,7 +44,7 @@ class TestStreetLevelCrime(unittest.TestCase):
         mock_get.assert_called_once_with("outcomes-at-location", params={"location_id": location_id, "date": date})
         self.assertEqual(result[0]["category"]["code"], "local-resolution")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_outcomes_by_coordinates(self, mock_get):
         mock_get.return_value = [
             {"category": {"code": "charged", "name": "Suspect charged"}}
@@ -54,7 +54,7 @@ class TestStreetLevelCrime(unittest.TestCase):
         mock_get.assert_called_once_with("outcomes-at-location", params={"lat": lat, "lng": lng, "date": date})
         self.assertEqual(result[0]["category"]["code"], "charged")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_crimes_no_location(self, mock_get):
         mock_get.return_value = [
             {"category": "bicycle-theft", "location": None, "month": "2024-01"}
@@ -66,7 +66,7 @@ class TestStreetLevelCrime(unittest.TestCase):
         )
         self.assertEqual(result[0]["category"], "bicycle-theft")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_crime_categories(self, mock_get):
         mock_get.return_value = [
             {"url": "all-crime", "name": "All crime and ASB"},
@@ -77,7 +77,7 @@ class TestStreetLevelCrime(unittest.TestCase):
         mock_get.assert_called_once_with("crime-categories", params={"date": date})
         self.assertEqual(result[0]["url"], "all-crime")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_last_updated(self, mock_get):
         mock_get.return_value = {"date": "2024-10-01"}
         result = self.client.get_last_updated()

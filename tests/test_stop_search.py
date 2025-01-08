@@ -6,7 +6,7 @@ class TestStopSearch(unittest.TestCase):
     def setUp(self):
         self.client = StopSearch()
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_stop_and_search_by_area_with_coordinates(self, mock_get):
         mock_get.return_value = [
             {"category": "drugs", "outcome": "positive result", "location": {"latitude": 52.629729, "longitude": -1.131592}}
@@ -16,7 +16,7 @@ class TestStopSearch(unittest.TestCase):
         mock_get.assert_called_once_with("stops-street", params={"lat": lat, "lng": lng, "date": date})
         self.assertEqual(result[0]["category"], "drugs")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_stop_and_search_by_area_with_polygon(self, mock_get):
         mock_get.return_value = [
             {"category": "weapons", "outcome": "arrest", "location": {"latitude": 52.634770, "longitude": -1.129407}}
@@ -30,7 +30,7 @@ class TestStopSearch(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.stop_and_search_by_area()
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_stop_and_search_by_location(self, mock_get):
         mock_get.return_value = [
             {"category": "alcohol", "outcome": "no further action", "location": {"name": "Market Street"}}
@@ -44,7 +44,7 @@ class TestStopSearch(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.stop_and_search_by_location("")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_stop_and_search_no_location(self, mock_get):
         mock_get.return_value = [
             {"category": "vehicle", "outcome": "no action", "location": None}
@@ -58,7 +58,7 @@ class TestStopSearch(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.stop_and_search_no_location("")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_stop_and_search_by_force(self, mock_get):
         mock_get.return_value = [
             {"category": "drugs", "outcome": "arrest", "location": {"name": "City Centre"}}
@@ -71,6 +71,26 @@ class TestStopSearch(unittest.TestCase):
     def test_stop_and_search_by_force_invalid_force(self):
         with self.assertRaises(ValueError):
             self.client.stop_and_search_by_force("")
+
+    @patch("uk_police.client.uk_police._get_with_retry")
+    def test_stop_and_search_by_area_valid(self, mock_get):
+        mock_get.return_value = [{"type": "stop_and_search"}]
+        result = self.client.stop_and_search_by_area(lat=51.5074, lng=-0.1278)
+        self.assertEqual(result, [{"type": "stop_and_search"}])
+    
+    def test_stop_and_search_by_area_invalid(self):
+        with self.assertRaises(ValueError):
+            self.client.stop_and_search_by_area()  # Missing lat/lng or poly
+
+    @patch("uk_police.client.uk_police._get_with_retry")
+    def test_stop_and_search_by_location_valid(self, mock_get):
+        mock_get.return_value = [{"type": "stop_and_search"}]
+        result = self.client.stop_and_search_by_location(location_id="123")
+        self.assertEqual(result, [{"type": "stop_and_search"}])
+
+    def test_stop_and_search_by_location_invalid(self):
+        with self.assertRaises(ValueError):
+            self.client.stop_and_search_by_location(location_id=None)
 
 if __name__ == "__main__":
     unittest.main()

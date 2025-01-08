@@ -6,7 +6,7 @@ class TestNeighbourhoods(unittest.TestCase):
     def setUp(self):
         self.client = Neighbourhoods()
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_list_neighbourhoods(self, mock_get):
         mock_get.return_value = [
             {"id": "N01", "name": "Central"},
@@ -22,7 +22,7 @@ class TestNeighbourhoods(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.list_neighbourhoods("")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_neighbourhood_details(self, mock_get):
         mock_get.return_value = {
             "id": "N01",
@@ -39,7 +39,7 @@ class TestNeighbourhoods(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.get_neighbourhood_details("", "N01")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_neighbourhood_boundary(self, mock_get):
         mock_get.return_value = [
             {"latitude": 52.634770, "longitude": -1.129407},
@@ -52,7 +52,7 @@ class TestNeighbourhoods(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["latitude"], 52.634770)
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_neighbourhood_team(self, mock_get):
         mock_get.return_value = [
             {"name": "PC John Doe", "rank": "Police Constable"},
@@ -65,7 +65,7 @@ class TestNeighbourhoods(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["rank"], "Police Constable")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_neighbourhood_events(self, mock_get):
         mock_get.return_value = [
             {"title": "Community Meeting", "description": "Discuss local issues."},
@@ -78,7 +78,7 @@ class TestNeighbourhoods(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["title"], "Community Meeting")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_neighbourhood_priorities(self, mock_get):
         mock_get.return_value = [
             {"issue": "Reduce anti-social behavior", "action": "Increase patrols in the area."}
@@ -90,7 +90,7 @@ class TestNeighbourhoods(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["issue"], "Reduce anti-social behavior")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_locate_neighbourhood(self, mock_get):
         mock_get.return_value = {"force": "leicestershire", "neighbourhood": "N01"}
         latitude, longitude = 52.634770, -1.129407

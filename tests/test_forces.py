@@ -6,7 +6,7 @@ class TestForces(unittest.TestCase):
     def setUp(self):
         self.client = Forces()
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_list_forces(self, mock_get):
         mock_get.return_value = [
             {"id": "leicestershire", "name": "Leicestershire Police"},
@@ -18,7 +18,7 @@ class TestForces(unittest.TestCase):
         self.assertEqual(result[0]["id"], "leicestershire")
         self.assertEqual(result[1]["name"], "Metropolitan Police Service")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_force_details(self, mock_get):
         mock_get.return_value = {
             "id": "leicestershire",
@@ -35,7 +35,7 @@ class TestForces(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.get_force_details("")
 
-    @patch("Pyolice.client.Pyolice._get")
+    @patch("uk_police.client.uk_police._get_with_retry")
     def test_get_senior_officers(self, mock_get):
         mock_get.return_value = [
             {"name": "Chief Constable Simon Cole", "rank": "Chief Constable"},

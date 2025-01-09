@@ -5,13 +5,17 @@ class uk_police:
     BASE_URL = "https://data.police.uk/api"
 
     def __init__(self):
-        pass
+        self.client = requests.Session()
+    
+    def close(self):
+        """Closes the active client"""
+        self.client.close()
 
     def _get(self, endpoint: str, params: dict = None):
         """Send a GET request to the UK Police API."""
         url = f"{self.BASE_URL}/{endpoint}"
         try:
-            response = requests.get(url, params=params, timeout=10)
+            response = self.client.get(url, params=params, timeout=10)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.Timeout:

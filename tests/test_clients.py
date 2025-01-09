@@ -79,5 +79,48 @@ class TestPyoliceClient(unittest.TestCase):
         self.assertEqual(result, {"key": "value"})
         self.assertEqual(mock_get.call_count, 2)
 
+    @patch("requests.Session.get")
+    def test_get_with_retry_all_fail(self, mock_get):
+        """Test when all retry attempts fail due to 429 errors."""
+        mock_response = unittest.mock.Mock()
+        mock_response.status_code = 429
+        mock_response.headers = {}
+        mock_response.raise_for_status.side_effect = RateLimitError("Rate limit exceeded.")
+        mock_get.side_effect = [mock_response, mock_response, mock_response]  # All retries fail
+
+        endpoint = "test-endpoint"
+        with self.assertRaises(RateLimitError):
+            self.client._get_with_retry(endpoint)
+        self.assertEqual(mock_get.call_count, 3)
+
+    @patch("requests.Session.get")
+    def test_get_with_retry_missing_retry_after(self, mock_get):
+        """Test when Retry-After header is missing, defaulting to 1-second wait."""
+        mock_response_429 = unittest.mock.Mock()
+        mock_response_429.status_code = 429
+        mock_response_429.headers = {}
+        mock_response_429.raise_for_status.side_effect = RateLimitError("Rate limit exceeded.")
+
+        mock_response_200 = unittest.mock.Mock()
+        mock_response_200.status_code = 200
+        mock_response_200.raise_for_status.return_value = None
+        mock_response_200.json.return_value = {"key": "value"}
+
+        mock_get.side_effect = [mock_response_429, mock_response_200]
+
+        endpoint = "test-endpoint"
+        result = self.client._get_with_retry(endpoint)
+        self.assertEqual(result, {"key": "value"})
+        self.assertEqual(mock_get.call_count, 2)
+
+    @patch("requests.Session.get")
+    def test_timeout_handling(self, mock_get):
+        """Simulate a timeout and ensure APIError is raised."""
+        mock_get.side_effect = requests.exceptions.Timeout
+        endpoint = "test-endpoint"
+        with self.assertRaises(APIError):
+            self.client._get(endpoint)
+
+
 if __name__ == "__main__":
     unittest.main()

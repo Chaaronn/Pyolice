@@ -83,6 +83,14 @@ class TestStreetLevelCrime(unittest.TestCase):
         result = self.client.get_last_updated()
         mock_get.assert_called_once_with("crime-last-updated")
         self.assertEqual(result["date"], "2024-10-01")
+    
+    def test_invalid_poly_string(self):
+        with self.assertRaises(ValueError):
+            self.client.get_street_crimes_in_area(poly="invalid-poly")
+
+    def test_invalid_crime_id(self):
+        with self.assertRaises(ValueError):
+            self.client.get_outcomes_for_crime(crime_id="short_id")
 
 if __name__ == "__main__":
     unittest.main()

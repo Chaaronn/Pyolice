@@ -92,5 +92,22 @@ class TestStopSearch(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.stop_and_search_by_location(location_id=None)
 
+    def test_stop_and_search_missing_lat_lng_poly(self):
+        with self.assertRaises(ValueError):
+            self.client.stop_and_search_by_area()
+
+    def test_stop_and_search_invalid_lat_lng(self):
+        with self.assertRaises(ValueError):
+            self.client.stop_and_search_by_area(lat=200, lng=200)  # Invalid coordinates
+
+    def test_stop_and_search_invalid_poly(self):
+        with self.assertRaises(ValueError):
+            self.client.stop_and_search_by_area(poly="invalid-poly")
+
+    def test_stop_and_search_missing_force(self):
+        with self.assertRaises(ValueError):
+            self.client.stop_and_search_no_location(force="")
+    
+
 if __name__ == "__main__":
     unittest.main()

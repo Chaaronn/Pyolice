@@ -4,6 +4,9 @@ def validate_lat_lng(lat: float, lng: float):
     """Validate latitude and longitude values."""
     if not (-90 <= lat <= 90 and -180 <= lng <= 180):
         raise ValueError("Latitude must be between -90 and 90, and longitude must be between -180 and 180.")
+    
+    if not (49.9 <= lat <= 60.9 and -8.2 <= lng <= 1.8):
+        raise ValueError("Coordinates must be within the bounds of the UK.")
 
 
 def validate_polygon(poly: str):

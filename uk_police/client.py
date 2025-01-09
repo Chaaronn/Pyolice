@@ -21,23 +21,22 @@ class uk_police:
         except requests.exceptions.Timeout:
             raise APIError("Request timed out.")
         except requests.exceptions.HTTPError as e:
-            status_code = response.status_code
-            if status_code == 400:
-                raise ValidationError(f"Bad request: {response.text}")
-            elif status_code == 401:
-                raise AuthenticationError("Unauthorized: Check your API credentials.")
-            elif status_code == 404:
-                raise NotFoundError(f"Not found: {url}")
-            elif status_code == 429:
-                retry_after = int(response.headers.get("Retry-After", 1))
-                raise RateLimitError(
-                    f"Rate limit exceeded. Retry after {retry_after} seconds.", 
-                    retry_after=retry_after
-                )
-            elif 500 <= status_code < 600:
-                raise ServerError(f"Server error ({status_code}): {response.text}")
-            else:
-                raise APIError(f"HTTP error ({status_code}): {response.text}")
+            response = getattr(e, "response", None)  # Get the response object from the exception
+            if response:
+                status_code = response.status_code
+                if status_code == 400:
+                    raise ValidationError(f"Bad request: {response.text}")
+                elif status_code == 404:
+                    raise NotFoundError(f"Not found: {url}")
+                elif status_code == 429:
+                    retry_after = int(response.headers.get("Retry-After", 1))
+                    raise RateLimitError(
+                        f"Rate limit exceeded. Retry after {retry_after} seconds.",
+                        retry_after=retry_after
+                    )
+                elif 500 <= status_code < 600:
+                    raise ServerError(f"Server error ({status_code}): {response.text}")
+            raise APIError(f"HTTP error occurred: {e}")
         except requests.exceptions.RequestException as e:
             raise APIError(f"An error occurred: {e}")
         
